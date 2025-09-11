@@ -114,6 +114,17 @@
   </div>
 
   <script>
+    // Helper to safely escape HTML special characters
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/\//g, '&#x2F;');
+    }
+
     // Get error details from URL parameters or localStorage
     function displayErrorDetails() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -122,8 +133,8 @@
 
       const errorDetails = document.getElementById('errorDetails');
       errorDetails.innerHTML = `
-        <strong>Error Code:</strong> ${errorCode}<br>
-        <strong>Message:</strong> ${errorMessage}
+        <strong>Error Code:</strong> ${escapeHTML(errorCode)}<br>
+        <strong>Message:</strong> ${escapeHTML(errorMessage)}
       `;
 
       // Clear stored error after displaying
