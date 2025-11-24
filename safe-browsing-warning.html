@@ -54,8 +54,12 @@
       padding: 15px;
       border-radius: 10px;
       margin: 20px 0;
-      word-break: break-all;
+      word-break: break-word;
       font-family: monospace;
+      max-width: 100%;
+      display: inline-block;
+      text-align: left;
+      white-space: normal;
     }
 
     .btn-group {
@@ -105,13 +109,51 @@
     <div class="warning-icon">⚠️</div>
     <h1>Security Warning</h1>
     <p>This URL has been flagged by Google Safe Browsing as potentially dangerous.</p>
-    <div class="url-box">{Replace}</div>
+    <div class="url-box"></div>
     <p>The destination may contain malware, phishing attempts, or other security threats. Proceed with caution.</p>
     <div class="btn-group">
       <a href="/" class="btn btn-safe">← Go Back Home</a>
-      <a href="{Replace}" class="btn btn-danger">Continue Anyway (Risky)</a>
+      <a id="continue-btn" href="javascript:void(0)" class="btn btn-danger" aria-disabled="true">Continue Anyway
+        (Risky)</a>
     </div>
   </div>
+
+  <script>
+    (function () {
+      const urlBox = document.querySelector('.url-box');
+      const continueBtn = document.getElementById('continue-btn');
+
+      const params = new URLSearchParams(window.location.search);
+      const riskyUrl = params.get('url');
+
+      const escapeHTML = (str) => {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      };
+
+      const isValidUrl = (value) => {
+        try {
+          const parsed = new URL(value);
+          return ['http:', 'https:'].includes(parsed.protocol);
+        } catch (error) {
+          return false;
+        }
+      };
+
+      if (riskyUrl && isValidUrl(riskyUrl)) {
+        urlBox.innerHTML = escapeHTML(riskyUrl);
+        continueBtn.href = riskyUrl;
+        continueBtn.removeAttribute('aria-disabled');
+      } else {
+        urlBox.innerHTML = 'Unknown or missing URL. Please return to safety.';
+        continueBtn.setAttribute('aria-disabled', 'true');
+      }
+    })();
+  </script>
 </body>
 
 </html>
