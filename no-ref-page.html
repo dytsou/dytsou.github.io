@@ -76,12 +76,41 @@
     .manual-link {
       color: rgba(255, 255, 255, 0.9);
       text-decoration: underline;
+      transition: opacity 0.2s ease, color 0.2s ease;
+    }
+
+    .manual-link[aria-disabled="true"] {
+      opacity: 0.5;
+      pointer-events: none;
+      cursor: default;
+      text-decoration: none;
     }
   </style>
   <script>
-    setTimeout(() => {
-      window.location.href = '{Replace}';
-    }, 3000);
+    (() => {
+      let hasNavigated = false;
+
+      const goBackOnce = () => {
+        if (hasNavigated) return;
+        hasNavigated = true;
+        history.back();
+      };
+
+      setTimeout(goBackOnce, 3000);
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const manualLink = document.querySelector('.manual-link');
+        if (!manualLink) return;
+
+        manualLink.addEventListener('click', (event) => {
+          event.preventDefault();
+          if (hasNavigated) return;
+
+          manualLink.setAttribute('aria-disabled', 'true');
+          goBackOnce();
+        });
+      });
+    })();
   </script>
 </head>
 
@@ -89,9 +118,9 @@
   <div class="container">
     <div class="spinner"></div>
     <h1>Redirecting...</h1>
-    <p>You will be redirected to your destination in 3 seconds.</p>
-    <div class="url-box">{Replace}</div>
-    <p>If you're not redirected automatically, <a href="{Replace}" class="manual-link">click here</a>.</p>
+    <p>You will be redirected to the previous page in 3 seconds.</p>
+    <p>If you're not redirected automatically, <a href="javascript:history.back()" class="manual-link">click here</a>.
+    </p>
   </div>
 </body>
 
