@@ -146,7 +146,18 @@
 
       if (riskyUrl && isValidUrl(riskyUrl)) {
         urlBox.innerHTML = escapeHTML(riskyUrl);
-        continueBtn.href = riskyUrl;
+        // Set href only using a validated URL object; avoid setting if protocol check fails
+        try {
+          const safeUrl = new URL(riskyUrl);
+          if (['http:', 'https:'].includes(safeUrl.protocol)) {
+            continueBtn.setAttribute('href', safeUrl.href);
+            // Optionally make it open in new tab and prevent opener attacks:
+            continueBtn.setAttribute('rel', 'noopener noreferrer');
+            continueBtn.setAttribute('target', '_blank');
+          }
+        } catch (e) {
+          // Invalid URL, fall through to disable button
+        }
         continueBtn.removeAttribute('aria-disabled');
       } else {
         urlBox.innerHTML = 'Unknown or missing URL. Please return to safety.';
