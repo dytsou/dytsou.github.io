@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting...</title>
+  <title>404 Not Found</title>
+  <meta name="description"
+    content="The page you are looking for does not exist. We will redirect you to the previous page in 10 seconds.">
   <style>
     * {
       margin: 0;
@@ -17,6 +19,7 @@
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       color: white;
@@ -85,6 +88,13 @@
       cursor: default;
       text-decoration: none;
     }
+
+    .links-outside {
+      margin-top: 30px;
+      font-size: 1.1em;
+      line-height: 1.8;
+      opacity: 0.9;
+    }
   </style>
   <script>
     (() => {
@@ -96,18 +106,24 @@
         history.back();
       };
 
-      setTimeout(goBackOnce, 3000);
+      setTimeout(goBackOnce, 10000);
 
       window.addEventListener('DOMContentLoaded', () => {
-        const manualLink = document.querySelector('.manual-link');
-        if (!manualLink) return;
+        const manualLinks = document.querySelectorAll('.manual-link');
+        if (!manualLinks.length) return;
 
-        manualLink.addEventListener('click', (event) => {
-          event.preventDefault();
-          if (hasNavigated) return;
+        manualLinks.forEach((link) => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (hasNavigated) return;
 
-          manualLink.setAttribute('aria-disabled', 'true');
-          goBackOnce();
+            manualLinks.forEach((l) => l.setAttribute('aria-disabled', 'true'));
+            if (link.href.includes('dy.tsou.me')) {
+              window.location.href = 'https://dy.tsou.me';
+            } else {
+              goBackOnce();
+            }
+          });
         });
       });
     })();
@@ -117,10 +133,14 @@
 <body>
   <div class="container">
     <div class="spinner"></div>
-    <h1>Redirecting...</h1>
-    <p>You will be redirected to the previous page in 3 seconds.</p>
-    <p>If you're not redirected automatically, <a href="javascript:history.back()" class="manual-link">click here</a>.
+    <h2>The page you are looking for does not exist.</h2>
+    <p>We're sorry, but the page you are looking for does not exist. We will redirect you to the previous page in 10
+      seconds.
     </p>
+  </div>
+  <div class="links-outside">
+    If you want to go back to the home page, <a href="https://dy.tsou.me" class="manual-link">click here</a>.<br>
+    If you're not redirected automatically, <a href="javascript:history.back()" class="manual-link">click here</a>.
   </div>
 </body>
 
