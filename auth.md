@@ -1,19 +1,35 @@
 # auth.md
 
-Audience: AI agents and automated clients.
+## Audience
 
-This site is a public personal portfolio. No authentication is required to read pages, discovery documents, or agent skills.
+AI agents and automated clients that need to discover or interact with https://dy.tsou.me.
 
-## Registration
+## Agent registration
 
-No agent registration or OAuth flow is required for public content on https://dy.tsou.me.
+Public content on this site does not require credentials. Agents may access pages and discovery documents immediately using the anonymous registration method below.
 
-## Credentials
+### Method: anonymous
 
-Public pages do not accept bearer tokens. If you need to contact the site owner, use the public channels documented at https://dy.tsou.me/contact.
+- **Identity type:** anonymous
+- **Registration endpoint:** none (open access; no account creation)
+- **Provisioning:** immediate on first request
+- **Credential types:** none
+- **Credential use:** no bearer token is required for public pages, `.well-known` discovery documents, or agent skills
+- **Claim URI:** https://dy.tsou.me/auth.md#anonymous
+
+## Protected resources
+
+This site has no protected APIs. All published pages and discovery documents are public.
 
 ## Discovery
 
 - API catalog: https://dy.tsou.me/.well-known/api-catalog
 - Agent skills: https://dy.tsou.me/.well-known/agent-skills/index.json
+- OAuth protected resource: https://dy.tsou.me/.well-known/oauth-protected-resource
+- OAuth authorization server: https://dy.tsou.me/.well-known/oauth-authorization-server
+- MCP server card: https://dy.tsou.me/.well-known/mcp/server-card.json
 - Sitemap: https://dy.tsou.me/sitemap.xml
+
+## Contact
+
+For human outreach, see https://dy.tsou.me/contact.
