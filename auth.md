@@ -15,6 +15,7 @@ Public content on this site does not require credentials. Agents may access page
 - **Provisioning:** immediate on first request
 - **Credential types:** none
 - **Credential use:** no bearer token is required for public pages, `.well-known` discovery documents, or agent skills
+- **Scopes:** public (read-only access to published site content)
 - **Claim URI:** https://dy.tsou.me/auth.md#anonymous
 
 ## Protected resources
